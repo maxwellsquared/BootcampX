@@ -22,3 +22,14 @@ SELECT students.name as student_name, students.start_date as student_start, coho
 FROM students LEFT JOIN cohorts ON cohorts.id = cohort_id
 WHERE students.start_date != cohorts.start_date
 ORDER BY cohorts.start_date;
+
+
+SELECT students.name as student, count(assignment_submissions.*) as total_submissions
+FROM assignment_submissions
+JOIN students ON students.id = student_id
+WHERE students.end_date IS NULL
+GROUP BY students.name
+HAVING count(assignment_submissions.*) < 100;
+-- having is like where but works on aggregated data
+-- normal data: students.name
+-- aggregated: sum(whatever) or other agg function
