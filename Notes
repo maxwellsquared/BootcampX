@@ -1,0 +1,24 @@
+SELECT students.name as student_name, email, cohorts.name as cohort_name
+FROM students JOIN cohorts ON cohort_id = cohorts.id;
+-- aka INNER JOIN - only students who have a cohort_id and cohorts with students
+
+SELECT students.name as student_name, email, cohorts.name as cohort_name
+FROM students LEFT OUTER JOIN cohorts ON cohorts.id = cohort_id;
+-- will return all the students, even ones without a cohort_id
+--- also FROM students LEFT JOIN cohorts ON cohorts (etc)
+
+SELECT students.name as student_name, email, cohorts.name as cohort_name
+FROM students RIGHT OUTER JOIN cohorts ON cohorts.id = cohort_id;
+-- will return all the cohorts, even ones without students
+-- also FROM students RIGHT JOIN cohorts (etc)
+
+SELECT students.name as student_name, email, cohorts.name as cohort_name
+FROM students FULL OUTER JOIN cohorts ON cohorts.id = cohort_id;
+-- will return all students and all cohorts even without matches
+
+
+
+SELECT students.name as student_name, students.start_date as student_start, cohorts.name as cohort_name, cohorts.start_date as cohort_start
+FROM students LEFT JOIN cohorts ON cohorts.id = cohort_id
+WHERE students.start_date != cohorts.start_date
+ORDER BY cohorts.start_date;
