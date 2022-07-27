@@ -33,3 +33,58 @@ HAVING count(assignment_submissions.*) < 100;
 -- having is like where but works on aggregated data
 -- normal data: students.name
 -- aggregated: sum(whatever) or other agg function
+
+
+SELECT (
+  SELECT count(*)
+  FROM table_name
+) as total, other_column
+FROM other_table_name
+ORDER BY total;
+-- if a query returns a single value, we can use it inside a select statement
+
+SELECT * FROM (
+  SELECT something_id
+  FROM someTable
+  WHERE something
+) as sub_table;
+-- the result of a select is p.much a table and can also be used as a data source of another select
+
+SELECT avg(total_students) as average_students
+FROM (
+  SELECT count(students) as total_students
+  FROM students
+  JOIN cohorts on cohorts.id = cohort_id
+  GROUP BY cohorts
+) as totals_table;
+-- we can also use a table inside a from statement!
+
+SELECT avg(total_students) as average_students
+FROM (
+  SELECT count(students) as total_students, cohorts.name as cohort_name
+  FROM students
+  JOIN cohorts on cohorts.id = cohort_id
+  GROUP BY cohorts.name
+) as totals_table;
+-- and this works inside a table with multiple columns!
+
+-- A sub query's results can also be used within the WHERE clause
+-- of a query. This is perhaps the most common way of using a sub select:
+
+SELECT assignments.name
+FROM assignments 
+WHERE id NOT IN (
+  SELECT assignment_id
+  FROM assignment_submissions
+  JOIN students ON students.id = student_id
+  WHERE students.name = 'Ibrahim Schimmel'
+);
+
+SELECT * FROM table
+WHERE id IN (
+  SELECT something_id
+  FROM someTable
+  WHERE something
+);
+-- Here's a generic version.
+
